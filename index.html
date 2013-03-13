@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:200,400,600);
+
+html {
+  min-width: 1040px;
+}
+
+body {
+  font-family: "Source Code Pro", sans-serif;
+  margin: 1em auto 4em auto;
+  position: relative;
+  width: 960px;
+  color: #555;
+  background: whiteSmoke;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 200;
+  letter-spacing: -6px;
+  margin: .8em 0 .1em 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  font-size: 100%;
+  margin-top: 2em;
+}
+
+h1, h2 {
+  text-rendering: optimizeLegibility;
+}
+
+h2 a {
+  color: #ccc;
+  left: -20px;
+  position: absolute;
+  width: 740px;
+}
+
+h3, h4, h5 {
+  font-size: 100%;
+  font-weight: 400;
+  margin-top: .8em;
+}
+
+h3, h4 {
+  text-transform: uppercase;
+}
+
+h4 {
+  color: #AAA; 
+}
+
+footer {
+  font-size: small;
+  margin-top: 8em;
+}
+
+header aside {
+  margin-top: 80px;
+}
+
+header aside,
+footer aside {
+  text-align: right;
+}
+
+aside {
+  font-size: small;
+  right: 0;
+  position: absolute;
+  width: 180px;
+  color: #AAA; 
+}
+
+.attribution {
+  font-size: small;
+  margin-bottom: 2em;
+}
+
+i, cite, em, var, address, dfn {
+  font-style: normal;
+  border-bottom: 1px solid #CCC;
+}
+
+body > p, li > p {
+  line-height: 1.5em;
+}
+
+body > p {
+  width: 720px;
+}
+
+body > blockquote {
+  width: 640px;
+}
+
+li {
+  width: 680px;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+pre, code, textarea {
+  font-family: "Source Code Pro", monospace;
+  color: #444;
+}
+
+code {
+  line-height: 1em;
+}
+
+textarea {
+  font-size: 100%;
+}
+
+body > pre {
+  border-left: solid 2px #ccc;
+  padding-left: 18px;
+  margin: 2em 0 2em -20px;
+}
+
+.html .value,
+.javascript .string,
+.javascript .regexp {
+  color: #756bb1;
+}
+
+.html .tag,
+.css .tag,
+.javascript .keyword {
+  color: #3182bd;
+}
+
+.comment {
+  color: #636363;
+}
+
+.html .doctype,
+.javascript .number {
+  color: #31a354;
+}
+
+.html .attribute,
+.css .attribute,
+.javascript .class,
+.javascript .special {
+  color: #e6550d;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+sup, sub {
+  line-height: 0;
+}
+
+q:before,
+blockquote:before {
+  content: "“";
+}
+
+q:after,
+blockquote:after {
+  content: "”";
+}
+
+blockquote:before {
+  position: absolute;
+  left: 2em;
+}
+
+blockquote:after {
+  position: absolute;
+}
+
+</style>
+<body>
+<h1>Tester</h1>
+<p>Our simple testing framework, ripped from the CoffeeScript <a href="https://github.com/jashkenas/coffee-script/blob/master/Cakefile">Cakefile</a>.
+
+
+</p>
+<p>Preliminaries.
+
+</p>
+<pre><code>{ok} = require &#39;assert&#39;
+
+print = console.log
+start = new Date
+total = passed = 0
+failures = []</code></pre>
+<p>Color hash for pretty terminal logging.
+
+</p>
+<pre><code>color = 
+  bold:  &#39;\x1B[0;1m&#39;
+  red:   &#39;\x1B[0;31m&#39;
+  green: &#39;\x1B[0;32m&#39;
+  reset: &#39;\x1B[0m&#39;</code></pre>
+<p>Log your message in color.
+
+</p>
+<pre><code>log = (name, message) -&gt; print color[name] + message + color.reset</code></pre>
+<p>Here&#39;s the main test method, which takes a description and function to test.
+
+</p>
+<pre><code>test = (desc, fn) -&gt;
+  ++total
+  try
+    fn.desc = desc
+    fn.call(fn)
+    ++passed
+  catch e
+    e.desc = desc if desc?
+    e.source = fn.toString() if fn.toString?
+    failures.push e</code></pre>
+<p>A better comparator.  See <a href="http://wiki.ecmascript.org/doku.php?id=harmony:egal">harmony:egal</a>.
+
+</p>
+<pre><code>egal = (a, b) -&gt;
+  if a is b
+    a isnt 0 or 1/a is 1/b
+  else
+    a isnt a and b isnt b</code></pre>
+<p>A recursive functional equivalence helper; uses <code>egal</code> for testing equivalence.
+
+</p>
+<pre><code>arrayEgal = (a, b) -&gt;
+  if egal a, b then yes
+  else if a instanceof Array and b instanceof Array
+    return no unless a.length is b.length
+    return no for el, idx in a when not arrayEgal el, b[idx]
+    yes</code></pre>
+<p>Use <code>eq</code> for comparing objects and <code>arrayEq</code> for lists.
+
+</p>
+<pre><code>eq = (a, b, msg) -&gt; ok egal(a, b), msg ? a + &#39; is not &#39; + b
+arrayEq = (a, b, msg) -&gt; ok arrayEgal(a,b), msg</code></pre>
+<p>Invoke <code>test.status</code> after testing to indicate how things turned out.
+
+</p>
+<pre><code>test.status = -&gt;
+  failed = failures.length
+  sec = ((Date.now() - start) / 1000).toFixed(2)
+  msg = &quot;passed #{passed} tests in #{sec} seconds#{color.reset}&quot;
+  return log &#39;green&#39;, msg unless failed
+  log &#39;red&#39;, &quot;failed #{failed} tests and #{msg}&quot;
+  for fail in failures
+    print &quot;&quot;
+    log &#39;red&#39;, &quot;#{fail.desc} / #{fail.message}&quot; if fail.desc
+    log &#39;red&#39;, &quot;  #{fail.name}&quot; if fail.name
+    log &#39;red&#39;, &quot;  Expected #{fail.expected} not #{fail.actual}&quot; if fail.expected
+    print &#39; &#39;, fail.source if fail.source
+  return</code></pre>
+<p>Finally, let&#39;s export the main methods.
+
+</p>
+<pre><code>exports[key] = value for key, value of {print, color, log, test, ok, eq, arrayEq}</code></pre>
+
