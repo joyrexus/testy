@@ -1,5 +1,7 @@
-Tester
-======
+Testy
+=====
+
+*Minimalist testing.*
 
 Our simple testing framework, ripped from the CoffeeScript [Cakefile](https://github.com/jashkenas/coffee-script/blob/master/Cakefile).
 
