@@ -80,5 +80,6 @@ Invoke `test.status` after testing to indicate how things turned out.
 
 Finally, let's export the main methods.
 
-    exports[key] = value for key, value of {print, color, log, test, ok, eq, arrayEq}
+    methods = {print, color, log, test, ok, eq, arrayEq, arrayEgal}
+    exports[key] = value for key, value of methods
 

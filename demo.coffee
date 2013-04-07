@@ -1,4 +1,4 @@
-{ok, eq, arrayEq, log, test} = require 'tester'
+{ok, eq, arrayEq, log, test} = require 'testy'
 
 log 'red', 'hello'
 log 'green', 'hello'
