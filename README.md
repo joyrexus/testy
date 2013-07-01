@@ -9,7 +9,7 @@ Our simple testing framework, ripped from the CoffeeScript [Cakefile](https://gi
 ## Demo
 
 ```coffeescript
-{ok, eq, arrayEq, log, test} = require 'tester'
+{ok, eq, arrayEq, log, test} = require 'testy'
 
 log 'red', 'hello'
 log 'green', 'hello'
